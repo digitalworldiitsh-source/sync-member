@@ -20,39 +20,44 @@ a[href="/home"].absolute.top-10.left-10 {
   pointer-events: none !important;
 }
 
-/* Light White & Purple Theme — Initial pre-mount loading splash */
+/* Frosted Liquid-Glass White & Purple Theme — Initial pre-mount loading splash */
 #root > div[style*="#0a0314"] {
-  background-color: #ffffff !important;
+  background: linear-gradient(155deg, #ffffff 0%, #f5eeff 55%, #e9dcff 100%) !important;
 }
 
-/* Light White & Purple Theme — Login & Reset Password Root Canvas */
+/* Frosted Liquid-Glass White & Purple Theme — Login & Reset Password Root Canvas */
 div[class*="bg-[#030108]"] {
-  background: linear-gradient(160deg, #ffffff 0%, #f7f3ff 52%, #ede5ff 100%) !important;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(168, 85, 247, 0.24) 0%, rgba(255, 255, 255, 0) 48%),
+    radial-gradient(circle at 86% 82%, rgba(124, 58, 237, 0.22) 0%, rgba(255, 255, 255, 0) 52%),
+    radial-gradient(circle at 82% 16%, rgba(196, 181, 253, 0.32) 0%, rgba(255, 255, 255, 0) 45%),
+    linear-gradient(160deg, #ffffff 0%, #f6f0ff 52%, #ebe1ff 100%) !important;
   color: #1e1033 !important;
 }
 
-/* Soft airy daylight treatment on destination background photography */
+/* Soft daylight glass refraction behind the card from destination photography */
 div[class*="bg-[#030108]"] img[alt="Destination Background"] {
-  opacity: 0.14 !important;
-  filter: blur(4px) saturate(0.75) brightness(1.18) !important;
+  opacity: 0.20 !important;
+  filter: blur(8px) saturate(0.85) brightness(1.16) !important;
   mix-blend-mode: multiply !important;
 }
 
-/* Convert dark vignette overlay into luminous white-lavender veil */
+/* Luminous white-lavender glass atmosphere overlay */
 div[class*="bg-[#030108]"] div[class*="from-[#030108]"] {
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.92) 0%,
-    rgba(248, 244, 255, 0.78) 55%,
-    rgba(237, 229, 255, 0.65) 100%
+    rgba(255, 255, 255, 0.84) 0%,
+    rgba(246, 240, 255, 0.68) 52%,
+    rgba(232, 220, 255, 0.56) 100%
   ) !important;
 }
 
-/* Soft violet ambient orbs */
+/* Soft floating violet liquid-glass blooms */
 div[class*="bg-[#030108]"] div[class*="radial-gradient"] {
   background: radial-gradient(
     circle,
-    rgba(139, 92, 246, 0.16) 0%,
+    rgba(147, 51, 234, 0.22) 0%,
+    rgba(196, 181, 253, 0.08) 42%,
     rgba(255, 255, 255, 0) 70%
   ) !important;
 }
@@ -79,13 +84,22 @@ div[class*="bg-[#030108]"] p[class*="tracking-[0.5em]"] {
   color: #7c3aed !important;
 }
 
-/* Main Login / Reset / OTP Glass Card — Crisp White Elevated Surface */
+/* Main Login / Reset / OTP Card — True Frosted Crystal Liquid-Glass Surface */
 div[class*="bg-[#030108]"] div[class*="rounded-[32px]"] {
-  background: rgba(255, 255, 255, 0.94) !important;
-  border: 1px solid rgba(124, 58, 237, 0.15) !important;
+  background: linear-gradient(
+    155deg,
+    rgba(255, 255, 255, 0.74) 0%,
+    rgba(248, 243, 255, 0.56) 55%,
+    rgba(255, 255, 255, 0.68) 100%
+  ) !important;
+  backdrop-filter: blur(28px) saturate(185%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(185%) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.88) !important;
   box-shadow:
-    0 24px 60px -16px rgba(109, 40, 217, 0.14),
-    0 4px 16px -4px rgba(109, 40, 217, 0.06) !important;
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.96),
+    inset 0 -1.5px 3px rgba(124, 58, 237, 0.08),
+    0 28px 64px -16px rgba(109, 40, 217, 0.22),
+    0 0 0 1px rgba(124, 58, 237, 0.12) !important;
 }
 
 /* Card Headings & Subtitles */
@@ -94,8 +108,7 @@ div[class*="bg-[#030108]"] h3 {
   color: #1e1033 !important;
 }
 
-div[class*="bg-[#030108]"] form p,
-div[class*="bg-[#030108]"] form p strong {
+div[class*="bg-[#030108]"] form p {
   color: #6d28d9 !important;
 }
 
@@ -103,17 +116,24 @@ div[class*="bg-[#030108]"] form p strong {
   color: #2e1065 !important;
 }
 
-/* Input Containers — Soft Lavender-White Fields */
+/* Input Containers — Translucent Frosted Glass Wells */
 div[class*="bg-[#030108]"] div[class*="bg-[#0A0514]"] {
-  background: #f8f5ff !important;
-  border: 1.5px solid #e5daff !important;
+  background: rgba(255, 255, 255, 0.62) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.88) !important;
+  box-shadow:
+    inset 0 2px 6px rgba(109, 40, 217, 0.06),
+    0 0 0 1px rgba(124, 58, 237, 0.14) !important;
   transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
 }
 
 div[class*="bg-[#030108]"] .group\\/input:focus-within div[class*="bg-[#0A0514]"] {
-  background: #ffffff !important;
-  border-color: #7c3aed !important;
-  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12) !important;
+  background: rgba(255, 255, 255, 0.90) !important;
+  border-color: rgba(124, 58, 237, 0.72) !important;
+  box-shadow:
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    0 0 0 4px rgba(124, 58, 237, 0.14) !important;
 }
 
 /* Input Text & Autofill Contrast */
@@ -126,13 +146,13 @@ div[class*="bg-[#030108]"] input:-webkit-autofill,
 div[class*="bg-[#030108]"] input:-webkit-autofill:hover,
 div[class*="bg-[#030108]"] input:-webkit-autofill:focus {
   -webkit-text-fill-color: #1e1033 !important;
-  -webkit-box-shadow: 0 0 0px 1000px #f8f5ff inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #f6f1ff inset !important;
   transition: background-color 5000s ease-in-out 0s;
 }
 
 /* Input Floating Labels */
 div[class*="bg-[#030108]"] label {
-  color: #7c6d99 !important;
+  color: #746494 !important;
 }
 
 div[class*="bg-[#030108]"] label[class*="text-[#A78BFA]"] {
@@ -141,7 +161,7 @@ div[class*="bg-[#030108]"] label[class*="text-[#A78BFA]"] {
 
 /* Input Left Icons & Password Visibility Toggle */
 div[class*="bg-[#030108]"] div[class*="bg-[#0A0514]"] > div[class*="left-0"] {
-  color: #8b7aa8 !important;
+  color: #826fa6 !important;
 }
 
 div[class*="bg-[#030108]"] .group\\/input:focus-within div[class*="bg-[#0A0514]"] > div[class*="left-0"] {
@@ -149,28 +169,42 @@ div[class*="bg-[#030108]"] .group\\/input:focus-within div[class*="bg-[#0A0514]"
 }
 
 div[class*="bg-[#030108]"] div[class*="bg-[#0A0514]"] button[type="button"] {
-  color: #8b7aa8 !important;
+  color: #826fa6 !important;
 }
 
 div[class*="bg-[#030108]"] div[class*="bg-[#0A0514]"] button[type="button"]:hover {
   color: #5b21b6 !important;
 }
 
-/* Primary CTA Button ("Begin Journey ->" / "Verify & Enter ->") — Signature Sync Holidays Purple */
+/* Primary CTA Button — Glossy Liquid-Purple Glass */
 div[class*="bg-[#030108]"] button[type="submit"] {
-  background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.92) 0%,
+    rgba(147, 51, 234, 0.94) 100%
+  ) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
   color: #ffffff !important;
-  box-shadow: 0 12px 28px -6px rgba(124, 58, 237, 0.42) !important;
-  border: 1px solid rgba(124, 58, 237, 0.25) !important;
+  border: 1px solid rgba(255, 255, 255, 0.36) !important;
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.42),
+    0 14px 32px -6px rgba(124, 58, 237, 0.46) !important;
 }
 
 div[class*="bg-[#030108]"] button[type="submit"]:hover {
-  background: linear-gradient(135deg, #6d28d9 0%, #7e22ce 100%) !important;
-  box-shadow: 0 16px 32px -6px rgba(109, 40, 217, 0.48) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(109, 40, 217, 0.96) 0%,
+    rgba(126, 34, 206, 0.98) 100%
+  ) !important;
+  box-shadow:
+    inset 0 1.5px 1px rgba(255, 255, 255, 0.48),
+    0 18px 36px -6px rgba(109, 40, 217, 0.52) !important;
 }
 
 div[class*="bg-[#030108]"] button[type="submit"] > div[class*="via-white"] {
-  opacity: 0.25 !important;
+  opacity: 0.32 !important;
 }
 
 /* Secondary Form Buttons (Back to Login, Resend Code) */
@@ -194,19 +228,27 @@ div[class*="bg-[#030108]"] div[class*="animate-spin"] {
 
 div[class*="bg-[#030108]"] div[class*="w-20"][class*="h-20"][class*="rounded-full"] {
   background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%) !important;
-  box-shadow: 0 14px 36px rgba(124, 58, 237, 0.35) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.4),
+    0 16px 38px rgba(124, 58, 237, 0.38) !important;
 }
 
 div[class*="bg-[#030108]"] div[class*="w-20"][class*="h-20"][class*="rounded-full"] svg {
   color: #ffffff !important;
 }
 
-/* Toast Notifications — Crisp Light Cards */
+/* Toast Notifications — Frosted Glass Cards */
 div[class*="bg-[#030108]"] div[class*="bg-[#0c1a14]"],
 div[class*="bg-[#030108]"] div[class*="bg-[#1a0a0c]"],
 div[class*="bg-[#030108]"] div[class*="bg-[#0e071e]"] {
-  background: rgba(255, 255, 255, 0.96) !important;
-  box-shadow: 0 12px 32px rgba(109, 40, 217, 0.14) !important;
+  background: rgba(255, 255, 255, 0.80) !important;
+  backdrop-filter: blur(22px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(170%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.88) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 14px 36px rgba(109, 40, 217, 0.18) !important;
 }
 
 div[class*="bg-[#030108]"] div[class*="bg-[#0c1a14]"] p,
@@ -221,11 +263,16 @@ div[class*="bg-[#030108]"] div[class*="bg-[#0e071e]"] button {
   color: #6b5b8a !important;
 }
 
-/* Floating Desktop Info Cards */
+/* Floating Desktop Info Cards — Frosted Glass Pills */
 div[class*="bg-[#030108]"] div[class*="backdrop-blur-md"][class*="border-white"] {
-  background: rgba(255, 255, 255, 0.88) !important;
-  border-color: rgba(124, 58, 237, 0.15) !important;
-  box-shadow: 0 12px 30px -8px rgba(109, 40, 217, 0.12) !important;
+  background: rgba(255, 255, 255, 0.68) !important;
+  backdrop-filter: blur(22px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(180%) !important;
+  border-color: rgba(255, 255, 255, 0.88) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 14px 34px -8px rgba(109, 40, 217, 0.16),
+    0 0 0 1px rgba(124, 58, 237, 0.10) !important;
 }
 
 div[class*="bg-[#030108]"] div[class*="backdrop-blur-md"][class*="border-white"] * {
@@ -234,7 +281,7 @@ div[class*="bg-[#030108]"] div[class*="backdrop-blur-md"][class*="border-white"]
 
 /* Bottom Footer Metadata Strip — Subtle Purple-Slate & Safe Right Clearance */
 div[class*="bg-[#030108]"] > div[class*="bottom-8"] {
-  color: rgba(76, 29, 149, 0.58) !important;
+  color: rgba(76, 29, 149, 0.62) !important;
   padding-right: 4.5rem !important;
 }
 
@@ -253,6 +300,7 @@ div[class*="bg-[#030108]"] > div[class*="bottom-8"] {
 const KIOSK_LOCAL_EXACT_PATHS = new Set([
   '/',
   '/index.html',
+  '/favicon.png',
   '/icon.svg',
   '/apple-touch-icon.png',
   '/manifest.webmanifest',

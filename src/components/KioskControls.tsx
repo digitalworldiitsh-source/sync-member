@@ -1,6 +1,8 @@
 import {useEffect, useRef, useState} from 'react';
 import {AnimatePresence, motion} from 'motion/react';
 import {
+  Check,
+  Copy,
   Download,
   EyeOff,
   Maximize2,
@@ -9,6 +11,7 @@ import {
   RotateCw,
   Share,
   SlidersHorizontal,
+  Smartphone,
   X,
 } from 'lucide-react';
 import {usePWAInstall} from '../hooks/usePWAInstall';
@@ -35,6 +38,8 @@ export function KioskControls({
   const [controlsHidden, setControlsHidden] = useState(false);
   const [showHiddenHint, setShowHiddenHint] = useState(false);
   const [showInstallGuide, setShowInstallGuide] = useState(false);
+  const [installTab, setInstallTab] = useState<'direct' | 'apk'>('direct');
+  const [copiedUrl, setCopiedUrl] = useState(false);
   const tapTimestampsRef = useRef<number[]>([]);
 
   // Keyboard shortcut (Alt+K or Ctrl+Shift+K) to restore or toggle kiosk controls
@@ -90,10 +95,30 @@ export function KioskControls({
       return;
     }
     setMenuOpen(false);
+    setInstallTab('direct');
     setShowInstallGuide(true);
   };
 
+  const handleOpenApkGuide = () => {
+    setMenuOpen(false);
+    setInstallTab('apk');
+    setShowInstallGuide(true);
+  };
+
+  const handleCopyAppUrl = async () => {
+    const appUrl = window.location.origin;
+    try {
+      await navigator.clipboard.writeText(appUrl);
+      setCopiedUrl(true);
+      window.setTimeout(() => setCopiedUrl(false), 2200);
+    } catch {
+      // Clipboard API may be unavailable in restricted contexts
+    }
+  };
+
   const canShowInstall = !isInstalled && !isStandalone;
+  const appOrigin =
+    typeof window !== 'undefined' ? window.location.origin : '';
 
   return (
     <>
@@ -147,14 +172,22 @@ export function KioskControls({
                 animate={{opacity: 1, scale: 1, y: 0}}
                 exit={{opacity: 0, scale: 0.96, y: 8}}
                 transition={{duration: 0.18, ease: [0.16, 1, 0.3, 1]}}
-                className="w-64 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xl overflow-hidden"
+                className="w-64 rounded-3xl bg-white/78 backdrop-blur-2xl border border-white/85 ring-1 ring-violet-500/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_24px_54px_-12px_rgba(109,40,217,0.24)] overflow-hidden"
                 role="dialog"
                 aria-label="Kiosk controls"
               >
-                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
-                  <span className="text-sm font-semibold text-slate-900 truncate">
-                    Sync Holidays
-                  </span>
+                <div className="flex items-center justify-between px-4 py-3 border-b border-violet-100/80">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <img
+                      src="/pwa-192x192.png"
+                      alt="Sync Holidays"
+                      className="w-6 h-6 rounded-lg shrink-0 shadow-xs"
+                      referrerPolicy="no-referrer"
+                    />
+                    <span className="text-sm font-semibold text-slate-900 truncate">
+                      Sync Holidays
+                    </span>
+                  </div>
                   <button
                     type="button"
                     onClick={() => setMenuOpen(false)}
@@ -166,6 +199,36 @@ export function KioskControls({
                 </div>
 
                 <div className="p-2 flex flex-col gap-0.5">
+                  {canShowInstall && (
+                    <button
+                      type="button"
+                      onClick={handleInstallClick}
+                      className="flex items-center gap-3 w-full min-h-[44px] px-3 py-2 rounded-xl text-left text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700 transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-violet-600"
+                    >
+                      <Download
+                        className="w-4 h-4 shrink-0 text-white"
+                        aria-hidden="true"
+                      />
+                      <span>
+                        {isIOS ? 'Add to Home Screen' : 'Install App'}
+                      </span>
+                    </button>
+                  )}
+
+                  {canShowInstall && !isIOS && (
+                    <button
+                      type="button"
+                      onClick={handleOpenApkGuide}
+                      className="flex items-center gap-3 w-full min-h-[44px] px-3 py-2 rounded-xl text-left text-sm font-medium text-violet-700 hover:bg-violet-50 transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-violet-600"
+                    >
+                      <Smartphone
+                        className="w-4 h-4 shrink-0 text-violet-600"
+                        aria-hidden="true"
+                      />
+                      <span>Android APK Package</span>
+                    </button>
+                  )}
+
                   {fullscreenSupported && !isStandalone && (
                     <button
                       type="button"
@@ -225,22 +288,6 @@ export function KioskControls({
                     <span>Replay Intro Video</span>
                   </button>
 
-                  {canShowInstall && (
-                    <button
-                      type="button"
-                      onClick={handleInstallClick}
-                      className="flex items-center gap-3 w-full min-h-[44px] px-3 py-2 rounded-xl text-left text-sm font-medium text-violet-700 bg-violet-50/70 hover:bg-violet-100/80 transition-colors cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-violet-600"
-                    >
-                      <Download
-                        className="w-4 h-4 shrink-0 text-violet-600"
-                        aria-hidden="true"
-                      />
-                      <span>
-                        {isIOS ? 'Add to Home Screen' : 'Install Kiosk App'}
-                      </span>
-                    </button>
-                  )}
-
                   <div className="my-1 border-t border-slate-100" />
 
                   <button
@@ -259,30 +306,43 @@ export function KioskControls({
             )}
           </AnimatePresence>
 
-          {/* Discreet corner trigger — low opacity when idle so portal remains unobstructed */}
-          <button
-            type="button"
-            onClick={() => setMenuOpen((prev) => !prev)}
-            aria-label={
-              menuOpen ? 'Close kiosk controls' : 'Open kiosk controls'
-            }
-            aria-expanded={menuOpen}
-            className={`inline-flex items-center justify-center w-11 h-11 rounded-full border shadow-md backdrop-blur-md transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 ${
-              menuOpen
-                ? 'bg-violet-600 border-violet-600 text-white opacity-100 scale-100'
-                : 'bg-white/90 border-violet-200/90 text-violet-700 opacity-65 hover:opacity-100 hover:border-violet-400 active:scale-95'
-            }`}
-          >
-            {menuOpen ? (
-              <X className="w-4 h-4" aria-hidden="true" />
-            ) : (
-              <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+          {/* Bottom-right control cluster: direct 1-tap Install button when browser supports WebAPK + discreet corner handle */}
+          <div className="flex items-center gap-2">
+            {canShowInstall && isInstallable && !menuOpen && (
+              <button
+                type="button"
+                onClick={handleInstallClick}
+                className="inline-flex items-center justify-center gap-2 h-11 px-4 rounded-full bg-gradient-to-r from-violet-600/92 to-purple-600/92 hover:from-violet-700 hover:to-purple-700 active:scale-95 text-white text-xs font-semibold border border-white/35 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-6px_rgba(124,58,237,0.45)] transition-all cursor-pointer whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+              >
+                <Download className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>Install App</span>
+              </button>
             )}
-          </button>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              aria-label={
+                menuOpen ? 'Close kiosk controls' : 'Open kiosk controls'
+              }
+              aria-expanded={menuOpen}
+              className={`inline-flex items-center justify-center w-11 h-11 rounded-full border backdrop-blur-xl transition-all cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600 ${
+                menuOpen
+                  ? 'bg-gradient-to-br from-violet-600 to-purple-600 border-white/40 text-white opacity-100 scale-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_10px_24px_-6px_rgba(124,58,237,0.45)]'
+                  : 'bg-white/70 border-white/85 ring-1 ring-violet-500/15 text-violet-700 opacity-75 hover:opacity-100 hover:bg-white/90 active:scale-95 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_8px_22px_-6px_rgba(109,40,217,0.22)]'
+              }`}
+            >
+              {menuOpen ? (
+                <X className="w-4 h-4" aria-hidden="true" />
+              ) : (
+                <SlidersHorizontal className="w-4 h-4" aria-hidden="true" />
+              )}
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Install / Home Screen Guide Modal (iOS Safari or browsers without native prompt) */}
+      {/* Install / Android APK Guide Modal */}
       <AnimatePresence>
         {showInstallGuide && (
           <motion.div
@@ -299,16 +359,16 @@ export function KioskControls({
               exit={{opacity: 0, scale: 0.96, y: 10}}
               transition={{duration: 0.2, ease: [0.16, 1, 0.3, 1]}}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl border border-slate-200"
+              className="w-full max-w-sm rounded-3xl bg-white/82 backdrop-blur-2xl p-6 border border-white/90 ring-1 ring-violet-500/15 shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_28px_64px_-14px_rgba(109,40,217,0.28)]"
               role="dialog"
               aria-labelledby="install-guide-title"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <img
-                    src="/icon.svg"
+                    src="/pwa-192x192.png"
                     alt="Sync Holidays"
-                    className="w-11 h-11 rounded-xl shrink-0"
+                    className="w-12 h-12 rounded-2xl shrink-0 shadow-[0_8px_20px_-6px_rgba(124,58,237,0.3)]"
                     referrerPolicy="no-referrer"
                   />
                   <div>
@@ -319,7 +379,7 @@ export function KioskControls({
                       Install Sync Holidays
                     </h2>
                     <p className="text-xs text-slate-500">
-                      Runs full-screen with no address bar
+                      Full-screen app with no address bar
                     </p>
                   </div>
                 </div>
@@ -332,6 +392,33 @@ export function KioskControls({
                   <X className="w-4 h-4" aria-hidden="true" />
                 </button>
               </div>
+
+              {!isIOS && (
+                <div className="mt-4 grid grid-cols-2 gap-1 p-1 rounded-xl bg-violet-50">
+                  <button
+                    type="button"
+                    onClick={() => setInstallTab('direct')}
+                    className={`min-h-[38px] rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                      installTab === 'direct'
+                        ? 'bg-white text-violet-700 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Direct Install
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInstallTab('apk')}
+                    className={`min-h-[38px] rounded-lg text-xs font-semibold transition-colors cursor-pointer whitespace-nowrap ${
+                      installTab === 'apk'
+                        ? 'bg-white text-violet-700 shadow-xs'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    Android APK File
+                  </button>
+                </div>
+              )}
 
               {isIOS ? (
                 <ol className="mt-5 space-y-3 text-sm text-slate-700">
@@ -373,15 +460,18 @@ export function KioskControls({
                     </span>
                   </li>
                 </ol>
-              ) : (
+              ) : installTab === 'direct' ? (
                 <ol className="mt-5 space-y-3 text-sm text-slate-700">
                   <li className="flex items-start gap-2.5">
                     <span className="font-semibold text-violet-600 tabular-nums">
                       1.
                     </span>
                     <span>
-                      Open your browser menu (⋮) or click the install icon in
-                      the browser toolbar.
+                      Open this app in{' '}
+                      <strong className="font-semibold text-slate-900">
+                        Google Chrome
+                      </strong>{' '}
+                      on Android or desktop.
                     </span>
                   </li>
                   <li className="flex items-start gap-2.5">
@@ -389,13 +479,13 @@ export function KioskControls({
                       2.
                     </span>
                     <span>
-                      Select{' '}
+                      Tap the browser menu (⋮) and choose{' '}
                       <strong className="font-semibold text-slate-900">
-                        Install Sync Holidays
+                        Install app
                       </strong>{' '}
                       or{' '}
                       <strong className="font-semibold text-slate-900">
-                        Add to Home Screen
+                        Add to Home screen
                       </strong>
                       .
                     </span>
@@ -405,11 +495,73 @@ export function KioskControls({
                       3.
                     </span>
                     <span>
-                      The app opens directly in full-screen standalone mode
-                      without an address bar.
+                      Android installs Sync Holidays as a full-screen app icon
+                      with no address bar.
                     </span>
                   </li>
                 </ol>
+              ) : (
+                <div className="mt-5 space-y-4 text-sm text-slate-700">
+                  <ol className="space-y-2.5">
+                    <li className="flex items-start gap-2.5">
+                      <span className="font-semibold text-violet-600 tabular-nums">
+                        1.
+                      </span>
+                      <span>Copy your live Sync Holidays app URL below.</span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="font-semibold text-violet-600 tabular-nums">
+                        2.
+                      </span>
+                      <span>
+                        Paste it at{' '}
+                        <strong className="font-semibold text-slate-900">
+                          pwabuilder.com
+                        </strong>{' '}
+                        and select{' '}
+                        <strong className="font-semibold text-slate-900">
+                          Package for Stores → Android
+                        </strong>
+                        .
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2.5">
+                      <span className="font-semibold text-violet-600 tabular-nums">
+                        3.
+                      </span>
+                      <span>
+                        Download the ZIP and open the signed{' '}
+                        <strong className="font-semibold text-slate-900">
+                          .apk
+                        </strong>{' '}
+                        on your Android device to install.
+                      </span>
+                    </li>
+                  </ol>
+
+                  <div className="flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50/60 p-2">
+                    <span className="flex-1 truncate px-1.5 text-xs font-mono text-slate-700">
+                      {appOrigin}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleCopyAppUrl}
+                      className="inline-flex items-center gap-1.5 min-h-[36px] px-3 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+                    >
+                      {copiedUrl ? (
+                        <>
+                          <Check className="w-3.5 h-3.5" aria-hidden="true" />
+                          Copied
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5" aria-hidden="true" />
+                          Copy URL
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
               )}
 
               <button

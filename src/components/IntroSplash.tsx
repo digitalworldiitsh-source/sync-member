@@ -113,9 +113,9 @@ export function IntroSplash({
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm p-6">
           <div className="flex flex-col items-center gap-5 text-center max-w-xs">
             <img
-              src="/icon.svg"
+              src="/pwa-192x192.png"
               alt="Sync Holidays"
-              className="w-20 h-20 rounded-2xl shadow-md"
+              className="w-24 h-24 rounded-3xl shadow-[0_14px_34px_-8px_rgba(124,58,237,0.28)]"
               referrerPolicy="no-referrer"
             />
             <div className="space-y-1">

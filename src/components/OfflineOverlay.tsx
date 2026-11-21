@@ -7,11 +7,11 @@ interface OfflineOverlayProps {
 export function OfflineOverlay({onRetry}: OfflineOverlayProps) {
   return (
     <div
-      className="fixed inset-0 z-[45] flex items-center justify-center bg-white/95 backdrop-blur-md p-6"
+      className="fixed inset-0 z-[45] flex items-center justify-center bg-gradient-to-br from-white/90 via-violet-50/85 to-purple-100/80 backdrop-blur-xl p-6"
       role="alert"
     >
-      <div className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+      <div className="w-full max-w-sm rounded-3xl border border-white/85 ring-1 ring-violet-500/15 bg-white/75 backdrop-blur-2xl p-6 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_24px_56px_-14px_rgba(109,40,217,0.20)]">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100/80 border border-white/90 text-violet-600 shadow-xs">
           <WifiOff className="w-6 h-6" aria-hidden="true" />
         </div>
         <h2 className="mt-4 text-lg font-semibold text-slate-900">
