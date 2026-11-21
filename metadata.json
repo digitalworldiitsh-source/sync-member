@@ -1,0 +1,6 @@
+{
+  "name": "Sync Holidays",
+  "description": "Full-screen kiosk web app for seamless access to Sync Holidays portal (www.sgcpvt.ltd/login).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

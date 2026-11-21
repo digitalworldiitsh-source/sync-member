@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="syncGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#A855F7" />
+      <stop offset="50%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#6D28D9" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#syncGrad)" />
+  <path
+    d="M174 188C136 188 106 218.5 106 256C106 293.5 136 324 174 324C214 324 238 290 256 256C274 222 298 188 338 188C376 188 406 218.5 406 256C406 293.5 376 324 338 324C298 324 274 290 256 256C238 222 214 188 174 188Z"
+    stroke="#FFFFFF"
+    stroke-width="34"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
